@@ -5,6 +5,8 @@
  */
 package cpu.simulation;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -39,7 +41,7 @@ public class MainUI extends javax.swing.JFrame {
             Functions f = new Functions();
             Object[] rowData = new Object[4];
             DefaultTableModel toCore1 = (DefaultTableModel)core1.getModel();
-            DefaultTableModel toCore2 = (DefaultTableModel)core2.getModel();
+            final int time;
             
             f=getPop();
             rowData[0] = f.getProcessName();
@@ -47,15 +49,24 @@ public class MainUI extends javax.swing.JFrame {
             rowData[2] = f.getETA();
             rowData[3] = f.getType();
             toCore1.addRow(rowData);
-            This is where threading for core 1;
             
-            f=getPop();
-            rowData[0] = f.getProcessName();
-            rowData[1] = f.getPriority();
-            rowData[2] = f.getETA();
-            rowData[3] = f.getType();
-            toCore2.addRow(rowData);
-            This is where threading for core 2;
+            time=f.getETA();
+            //This is where threading for core 1;
+            
+            Thread one = new Thread(){
+                public void run(){
+                    try {
+                        Thread.sleep(time * 1000);
+                        this.interrupt();
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            };
+            one.start();
+            while(!Thread.interrupted()){}
+            System.out
+            
         }
     }
     public void RR(){
