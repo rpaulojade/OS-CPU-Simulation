@@ -24,68 +24,58 @@ public class MainUI extends javax.swing.JFrame {
      */
     public MainUI() {
         initComponents();
+        jPanel2.setVisible(false);
     }
 
     public void FIFO(){
-        model = (DefaultTableModel)queues.getModel();
-        
-        for(int row = 0; row < Processes.getRowCount(); row++){
-            Object[] rowData = new Object[4];
-            rowData[0] = Processes.getValueAt(row, 0);
-            rowData[1] = Processes.getValueAt(row, 1);
-            rowData[2] = Processes.getValueAt(row, 2);
-            rowData[3] = Processes.getValueAt(row, 3);
-            model.addRow(rowData);
-        }
-        
         //CPU Process starts
+        DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
         for(int row = 0; row < queues.getRowCount(); row++){
             Functions f = new Functions();
             Object[] rowData = new Object[4];
-            model = (DefaultTableModel)core1.getModel();
-            final int time;
+//            final int time;
             
             f=getPop();
             rowData[0] = f.getProcessName();
             rowData[1] = f.getPriority();
             rowData[2] = f.getETA();
             rowData[3] = f.getType();
-            model.addRow(rowData);
-            
-            time=f.getETA();
+            model2.addRow(rowData);
+//            
+//            time=f.getETA();
             //This is where threading for core 1;
             
-            Thread one = new Thread(){
-                public void run(){
-                    try {
-                        Thread.sleep(time * 1000);
-                        this.interrupt();
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-            };
-            one.start();
-            while(!Thread.interrupted()){}
+//            Thread one = new Thread(){
+//                public void run(){
+//                    try {
+//                        Thread.sleep(time * 1000);
+//                        this.interrupt();
+//                    } catch (InterruptedException ex) {
+//                        Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            };
+//            one.start();
+//            while(!Thread.interrupted()){}
             //System.out
             
         }
     }
-    public void RR(){
-        model = (DefaultTableModel)queues.getModel();
-        
-        for(int row = 0; row < Processes.getRowCount(); row++){
-            Object[] rowData = new Object[4];
-            rowData[0] = Processes.getValueAt(row, 0);
-            rowData[1] = Processes.getValueAt(row, 1);
-            rowData[2] = Processes.getValueAt(row, 2);
-            rowData[3] = Processes.getValueAt(row, 3);
-            model.addRow(rowData);
-        }
-        
-        //CPU Process starts
-        
-    }
+//    public void RR(){
+//        model = (DefaultTableModel)queues.getModel();
+//        
+//        for(int row = 0; row < Processes.getRowCount(); row++){
+//            Object[] rowData = new Object[4];
+//            rowData[0] = Processes.getValueAt(row, 0);
+//            rowData[1] = Processes.getValueAt(row, 1);
+//            rowData[2] = Processes.getValueAt(row, 2);
+//            rowData[3] = Processes.getValueAt(row, 3);
+//            model.addRow(rowData);
+//        }
+//        
+//        //CPU Process starts
+//        
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -153,6 +143,11 @@ public class MainUI extends javax.swing.JFrame {
         });
 
         jTextField3.setEditable(false);
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
 
         jTextField4.setEditable(false);
         jTextField4.addActionListener(new java.awt.event.ActionListener() {
@@ -185,6 +180,7 @@ public class MainUI extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Policies");
 
+        pFIFO.setSelected(true);
         pFIFO.setText("FIFO");
         pFIFO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -643,9 +639,7 @@ public class MainUI extends javax.swing.JFrame {
             model.addRow(rowData);
         }
         
-        if (pFIFO.isSelected()){
-            
-        }
+        FIFO();
         //public void start();
         
     }//GEN-LAST:event_startActionPerformed
@@ -733,6 +727,10 @@ public class MainUI extends javax.swing.JFrame {
         this.jPanel1.setVisible(true);
     }//GEN-LAST:event_backActionPerformed
 
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -769,12 +767,14 @@ public class MainUI extends javax.swing.JFrame {
     }
     
     public Functions getPop (){
+        model = (DefaultTableModel)queues.getModel();
         Functions ret = new Functions();
-        ret.setProcessName((String) queues.getValueAt(0, 0));
-        ret.setPriority((int) queues.getValueAt(0, 1));
-        ret.setETA((int) queues.getValueAt(0, 2));
-        ret.setType((String) queues.getValueAt(0, 3));
-        queues.remove(0);
+        ret.setProcessName(queues.getValueAt(0, 0).toString());
+        ret.setPriority(Integer.parseInt(queues.getValueAt(0, 1).toString()));
+        ret.setETA(Integer.parseInt(queues.getValueAt(0, 2).toString()));
+        ret.setType(queues.getValueAt(0, 3).toString());
+        model.removeRow(0);
+        JOptionPane.showMessageDialog(this, "Kleptomantis!");
         return ret;
     }
   
