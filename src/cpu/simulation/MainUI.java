@@ -7,6 +7,7 @@ package cpu.simulation;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -16,6 +17,7 @@ import javax.swing.table.TableModel;
  * @author Norwin Ygay
  */
 public class MainUI extends javax.swing.JFrame {
+    DefaultTableModel model = new DefaultTableModel();
 
     /**
      * Creates new form MainUI
@@ -25,7 +27,7 @@ public class MainUI extends javax.swing.JFrame {
     }
 
     public void FIFO(){
-        DefaultTableModel toQueues = (DefaultTableModel)queues.getModel();
+        model = (DefaultTableModel)queues.getModel();
         
         for(int row = 0; row < Processes.getRowCount(); row++){
             Object[] rowData = new Object[4];
@@ -33,14 +35,14 @@ public class MainUI extends javax.swing.JFrame {
             rowData[1] = Processes.getValueAt(row, 1);
             rowData[2] = Processes.getValueAt(row, 2);
             rowData[3] = Processes.getValueAt(row, 3);
-            toQueues.addRow(rowData);
+            model.addRow(rowData);
         }
         
         //CPU Process starts
         for(int row = 0; row < queues.getRowCount(); row++){
             Functions f = new Functions();
             Object[] rowData = new Object[4];
-            DefaultTableModel toCore1 = (DefaultTableModel)core1.getModel();
+            model = (DefaultTableModel)core1.getModel();
             final int time;
             
             f=getPop();
@@ -48,7 +50,7 @@ public class MainUI extends javax.swing.JFrame {
             rowData[1] = f.getPriority();
             rowData[2] = f.getETA();
             rowData[3] = f.getType();
-            toCore1.addRow(rowData);
+            model.addRow(rowData);
             
             time=f.getETA();
             //This is where threading for core 1;
@@ -65,12 +67,12 @@ public class MainUI extends javax.swing.JFrame {
             };
             one.start();
             while(!Thread.interrupted()){}
-            System.out
+            //System.out
             
         }
     }
     public void RR(){
-        DefaultTableModel toQueues = (DefaultTableModel)queues.getModel();
+        model = (DefaultTableModel)queues.getModel();
         
         for(int row = 0; row < Processes.getRowCount(); row++){
             Object[] rowData = new Object[4];
@@ -78,7 +80,7 @@ public class MainUI extends javax.swing.JFrame {
             rowData[1] = Processes.getValueAt(row, 1);
             rowData[2] = Processes.getValueAt(row, 2);
             rowData[3] = Processes.getValueAt(row, 3);
-            toQueues.addRow(rowData);
+            model.addRow(rowData);
         }
         
         //CPU Process starts
@@ -125,6 +127,19 @@ public class MainUI extends javax.swing.JFrame {
         stop = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        processText = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        priorityText = new javax.swing.JTextField();
+        clear = new javax.swing.JButton();
+        addToList = new javax.swing.JButton();
+        back = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        etaText = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        typeText = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -456,6 +471,131 @@ public class MainUI extends javax.swing.JFrame {
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
+        jLabel10.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel10.setText("Add Process");
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel11.setText("Process Name");
+
+        processText.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                processTextInputMethodTextChanged(evt);
+            }
+        });
+        processText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                processTextActionPerformed(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel12.setText("Priority");
+
+        priorityText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        clear.setText("Clear");
+        clear.setMaximumSize(new java.awt.Dimension(77, 77));
+        clear.setPreferredSize(new java.awt.Dimension(110, 25));
+        clear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearActionPerformed(evt);
+            }
+        });
+
+        addToList.setText("Add Process");
+        addToList.setPreferredSize(new java.awt.Dimension(110, 25));
+        addToList.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addToListActionPerformed(evt);
+            }
+        });
+
+        back.setText("Back");
+        back.setPreferredSize(new java.awt.Dimension(110, 25));
+        back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backActionPerformed(evt);
+            }
+        });
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel13.setText("ETA(s)");
+
+        etaText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel14.setText("Type");
+
+        typeText.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pre-emptive", "Non-Preemptive" }));
+        typeText.setSelectedIndex(-1);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(112, 112, 112)
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(96, 96, 96)
+                        .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(addToList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(67, 67, 67)
+                        .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel14)
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel13))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(priorityText)
+                            .addComponent(processText)
+                            .addComponent(typeText, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(etaText, javax.swing.GroupLayout.Alignment.TRAILING))))
+                .addGap(15, 15, 15))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addGap(37, 37, 37)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(processText, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(priorityText, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(etaText, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel14)
+                    .addComponent(typeText, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addToList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -464,6 +604,11 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(11, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(182, 182, 182)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(182, 182, 182)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -471,6 +616,11 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(180, 180, 180)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(180, 180, 180)))
         );
 
         pack();
@@ -482,7 +632,7 @@ public class MainUI extends javax.swing.JFrame {
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel toQueues = (DefaultTableModel)queues.getModel();
+        model = (DefaultTableModel)queues.getModel();
         
         for(int row = 0; row < Processes.getRowCount(); row++){
             Object[] rowData = new Object[4];
@@ -490,7 +640,7 @@ public class MainUI extends javax.swing.JFrame {
             rowData[1] = Processes.getValueAt(row, 1);
             rowData[2] = Processes.getValueAt(row, 2);
             rowData[3] = Processes.getValueAt(row, 3);
-            toQueues.addRow(rowData);
+            model.addRow(rowData);
         }
         
         if (pFIFO.isSelected()){
@@ -502,8 +652,8 @@ public class MainUI extends javax.swing.JFrame {
 
     private void addProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProcessActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        new Add_Process().setVisible(true);
+        this.jPanel1.setVisible(false);
+        this.jPanel2.setVisible(true);
     }//GEN-LAST:event_addProcessActionPerformed
 
     private void pLotteryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pLotteryActionPerformed
@@ -541,6 +691,47 @@ public class MainUI extends javax.swing.JFrame {
     private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2KeyPressed
+
+    private void processTextInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_processTextInputMethodTextChanged
+
+    }//GEN-LAST:event_processTextInputMethodTextChanged
+
+    private void processTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_processTextActionPerformed
+
+    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
+        // TODO add your handling code here:
+        processText.setText("");
+        priorityText.setText("");
+        etaText.setText("");
+        typeText.setSelectedIndex(-1);
+
+    }//GEN-LAST:event_clearActionPerformed
+
+    private void addToListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToListActionPerformed
+        model = (DefaultTableModel) Processes.getModel();
+        if(processText.getText().isEmpty() || priorityText.getText().isEmpty() || etaText.getText().isEmpty() || (typeText.getSelectedIndex() == -1)){
+            JOptionPane.showMessageDialog(this, "Field/s Must Not Empty");
+
+        }else{
+            Object[] obj = new Object[4];
+
+            obj[0] = processText.getText();
+            obj[1] = priorityText.getText();
+            obj[2] = etaText.getText();
+            obj[3] = typeText.getSelectedItem();
+            model.addRow(obj);
+            JOptionPane.showMessageDialog(this, "Process Added!");
+            clearActionPerformed(evt);
+        }
+    }//GEN-LAST:event_addToListActionPerformed
+
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
+        // TODO add your handling code here:
+        this.jPanel2.setVisible(false);
+        this.jPanel1.setVisible(true);
+    }//GEN-LAST:event_backActionPerformed
 
     /**
      * @param args the command line arguments
@@ -597,8 +788,17 @@ public class MainUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Processes;
     private javax.swing.JButton addProcess;
+    private javax.swing.JButton addToList;
+    private javax.swing.JButton back;
+    private javax.swing.JButton clear;
     private javax.swing.JTable core1;
+    private javax.swing.JTextField etaText;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -608,6 +808,7 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -623,8 +824,11 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton pPriority;
     private javax.swing.JRadioButton pRoundRobin;
     private javax.swing.JRadioButton pSJF;
+    private javax.swing.JTextField priorityText;
+    private javax.swing.JTextField processText;
     private javax.swing.JTable queues;
     private javax.swing.JButton start;
     private javax.swing.JButton stop;
+    private javax.swing.JComboBox<String> typeText;
     // End of variables declaration//GEN-END:variables
 }
