@@ -502,6 +502,8 @@ public class MainUI extends javax.swing.JFrame {
 
     private void addProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProcessActionPerformed
         // TODO add your handling code here:
+        this.setVisible(false);
+        new Add_Process().setVisible(true);
     }//GEN-LAST:event_addProcessActionPerformed
 
     private void pLotteryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pLotteryActionPerformed
@@ -585,7 +587,12 @@ public class MainUI extends javax.swing.JFrame {
         return ret;
     }
   
-    
+    public MainUI(Object[] obj){
+        initComponents();
+        
+        DefaultTableModel toProcess = (DefaultTableModel)Processes.getModel();
+        toProcess.addRow(obj);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable Processes;
