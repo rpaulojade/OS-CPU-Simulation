@@ -5,6 +5,10 @@
  */
 package cpu.simulation;
 
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author Norwin Ygay
@@ -41,23 +45,23 @@ public class MainUI extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jRadioButton6 = new javax.swing.JRadioButton();
+        pFIFO = new javax.swing.JRadioButton();
+        pRoundRobin = new javax.swing.JRadioButton();
+        pSJF = new javax.swing.JRadioButton();
+        pPriority = new javax.swing.JRadioButton();
+        pMFQ = new javax.swing.JRadioButton();
+        pLottery = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        Processes = new javax.swing.JTable();
+        addProcess = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        core1 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        queues = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        core2 = new javax.swing.JTable();
+        start = new javax.swing.JButton();
+        stop = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,81 +107,75 @@ public class MainUI extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Policies");
 
-        jRadioButton1.setText("FIFO");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        pFIFO.setText("FIFO");
+        pFIFO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                pFIFOActionPerformed(evt);
             }
         });
 
-        jRadioButton2.setText("Round Robin");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        pRoundRobin.setText("Round Robin");
+        pRoundRobin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                pRoundRobinActionPerformed(evt);
             }
         });
 
-        jRadioButton3.setText("Shortest Job First");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+        pSJF.setText("Shortest Job First");
+        pSJF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
+                pSJFActionPerformed(evt);
             }
         });
 
-        jRadioButton4.setText("Priority Scheduling");
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+        pPriority.setText("Priority Scheduling");
+        pPriority.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
+                pPriorityActionPerformed(evt);
             }
         });
 
-        jRadioButton5.setText("Multilevel Feedback Queues");
-        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
+        pMFQ.setText("Multilevel Feedback Queues");
+        pMFQ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
+                pMFQActionPerformed(evt);
             }
         });
 
-        jRadioButton6.setText("Lottery Scheduling");
-        jRadioButton6.addActionListener(new java.awt.event.ActionListener() {
+        pLottery.setText("Lottery Scheduling");
+        pLottery.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton6ActionPerformed(evt);
+                pLotteryActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        Processes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Process Name", "Priority", "Estimated Time To Be Processed", "Type", "Running Time"
+                "Process Name", "Priority", "Estimated Time To Be Processed(s)", "Type"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-        }
+        Processes.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(Processes);
 
-        jButton1.setText("Add Process");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addProcess.setText("Add Process");
+        addProcess.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addProcessActionPerformed(evt);
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        core1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -193,13 +191,13 @@ public class MainUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable2.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
+        core1.getTableHeader().setReorderingAllowed(false);
+        jScrollPane2.setViewportView(core1);
+        if (core1.getColumnModel().getColumnCount() > 0) {
+            core1.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        queues.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -215,13 +213,13 @@ public class MainUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable3.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
+        queues.getTableHeader().setReorderingAllowed(false);
+        jScrollPane3.setViewportView(queues);
+        if (queues.getColumnModel().getColumnCount() > 0) {
+            queues.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        core2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -237,23 +235,23 @@ public class MainUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable4.getTableHeader().setReorderingAllowed(false);
-        jScrollPane4.setViewportView(jTable4);
-        if (jTable4.getColumnModel().getColumnCount() > 0) {
-            jTable4.getColumnModel().getColumn(0).setResizable(false);
+        core2.getTableHeader().setReorderingAllowed(false);
+        jScrollPane4.setViewportView(core2);
+        if (core2.getColumnModel().getColumnCount() > 0) {
+            core2.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        jButton2.setText("Start Simulate");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        start.setText("Start Simulate");
+        start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                startActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Stop Simulate");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        stop.setText("Stop Simulate");
+        stop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                stopActionPerformed(evt);
             }
         });
 
@@ -270,11 +268,11 @@ public class MainUI extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jRadioButton5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(pMFQ, javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jRadioButton6)
-                                        .addComponent(jButton1))
+                                        .addComponent(pLottery)
+                                        .addComponent(addProcess))
                                     .addGap(44, 44, 44)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,11 +285,6 @@ public class MainUI extends javax.swing.JFrame {
                                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                .addGap(31, 31, 31)
-                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jRadioButton3)
-                                                    .addComponent(jRadioButton4)))
                                             .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -312,12 +305,17 @@ public class MainUI extends javax.swing.JFrame {
                                                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                                         .addGap(47, 47, 47)
-                                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(31, 31, 31)
+                                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(pSJF)
+                                                    .addComponent(pPriority)))))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jRadioButton1)
-                                            .addComponent(jRadioButton2))))
+                                            .addComponent(pFIFO)
+                                            .addComponent(pRoundRobin))))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGap(38, 38, 38)
@@ -339,9 +337,9 @@ public class MainUI extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(start)
                 .addGap(43, 43, 43)
-                .addComponent(jButton3)
+                .addComponent(stop)
                 .addGap(34, 34, 34))
         );
         jPanel1Layout.setVerticalGroup(
@@ -366,29 +364,33 @@ public class MainUI extends javax.swing.JFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton5)
-                    .addComponent(jRadioButton3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton6)
-                    .addComponent(jRadioButton4))
-                .addGap(31, 31, 31)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(347, 347, 347))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pFIFO)
+                            .addComponent(pMFQ))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pRoundRobin)
+                            .addComponent(pLottery)
+                            .addComponent(pPriority))
+                        .addGap(31, 31, 31)
+                        .addComponent(addProcess)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(start)
+                            .addComponent(stop))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(347, 347, 347))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(pSJF, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -411,41 +413,57 @@ public class MainUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_stopActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        DefaultTableModel toQueues = (DefaultTableModel)queues.getModel();
+        
+        for(int row = 0; row < Processes.getRowCount(); row++){
+            Object[] rowData = new Object[4];
+            rowData[0] = Processes.getValueAt(row, 0);
+            rowData[1] = Processes.getValueAt(row, 1);
+            rowData[2] = Processes.getValueAt(row, 2);
+            rowData[3] = Processes.getValueAt(row, 3);
+            toQueues.addRow(rowData);
+        }
+        
+        if (pFIFO.isSelected()){
+            
+        }
+        //public void start();
+        
+    }//GEN-LAST:event_startActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void addProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProcessActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addProcessActionPerformed
 
-    private void jRadioButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton6ActionPerformed
+    private void pLotteryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pLotteryActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton6ActionPerformed
+    }//GEN-LAST:event_pLotteryActionPerformed
 
-    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+    private void pMFQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pMFQActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton5ActionPerformed
+    }//GEN-LAST:event_pMFQActionPerformed
 
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+    private void pPriorityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pPriorityActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
+    }//GEN-LAST:event_pPriorityActionPerformed
 
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+    private void pSJFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pSJFActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
+    }//GEN-LAST:event_pSJFActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+    private void pRoundRobinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pRoundRobinActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    }//GEN-LAST:event_pRoundRobinActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+    private void pFIFOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pFIFOActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    }//GEN-LAST:event_pFIFOActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
@@ -493,11 +511,24 @@ public class MainUI extends javax.swing.JFrame {
             }
         });
     }
+    
+    public Functions getPop (){
+        Functions ret = new Functions();
+        ret.setProcessName((String) queues.getValueAt(0, 0));
+        ret.setPriority((int) queues.getValueAt(0, 1));
+        ret.setETA((int) queues.getValueAt(0, 2));
+        ret.setType((String) queues.getValueAt(0, 3));
+        queues.remove(0);
+        return ret;
+    }
+  
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTable Processes;
+    private javax.swing.JButton addProcess;
+    private javax.swing.JTable core1;
+    private javax.swing.JTable core2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -506,25 +537,24 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JRadioButton pFIFO;
+    private javax.swing.JRadioButton pLottery;
+    private javax.swing.JRadioButton pMFQ;
+    private javax.swing.JRadioButton pPriority;
+    private javax.swing.JRadioButton pRoundRobin;
+    private javax.swing.JRadioButton pSJF;
+    private javax.swing.JTable queues;
+    private javax.swing.JButton start;
+    private javax.swing.JButton stop;
     // End of variables declaration//GEN-END:variables
 }
