@@ -67,6 +67,46 @@ public class MainUI extends javax.swing.JFrame {
             
         }
     
+    public void priority(){
+        DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
+        DefaultTableModel modelq = (DefaultTableModel)queues.getModel();
+        int smaller=0;
+        
+        while(queues.getRowCount() != 0){
+            final int time;
+            for(int x=0;x<queues.getRowCount();x++){
+                if(Integer.parseInt(queues.getValueAt(x, 1).toString()) < Integer.parseInt(queues.getValueAt(smaller, 1).toString())){
+                    smaller=x;
+                }
+            }
+            Object[] rowData = new Object[4];
+            rowData[0] = queues.getValueAt(smaller, 0);
+            rowData[1] = queues.getValueAt(smaller, 1);
+            rowData[2] = queues.getValueAt(smaller, 2);
+            rowData[3] = queues.getValueAt(smaller, 3);
+            model2.addRow(rowData);
+            modelq.removeRow(smaller);
+            smaller=0;
+            
+            time=Integer.parseInt(rowData[2].toString());
+            //This is where threading for core 1;
+            //System.out.println(time);
+             Thread one = new Thread(){
+                 public void run(){
+                     try {
+                         //model2.addRow(rowData);
+                         Thread.sleep(time * 1000);
+                         model2.removeRow(0);
+                         this.interrupt();
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+             };
+             one.start();
+        }
+    }
+    
     public void RR(){
         model = (DefaultTableModel)queues.getModel();
         
@@ -645,7 +685,7 @@ public class MainUI extends javax.swing.JFrame {
             model.addRow(rowData);
         }
         
-        FIFO();
+        priority();
         //public void start();
         
     }//GEN-LAST:event_startActionPerformed
