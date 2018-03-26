@@ -5,6 +5,7 @@
  */
 package cpu.simulation;
 
+import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,13 +28,36 @@ public class MainUI extends javax.swing.JFrame {
         jPanel2.setVisible(false);
     }
 
-    public void FIFO(){
-        //CPU Process starts
+    public void FIFO() {
         DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
-        for(int row = 0; row < queues.getRowCount(); row++){
-            Functions f = new Functions();
+        //CPU Process starts
+        
+        Functions f = new Functions();
+        
+            
+                //This is where threading for core 1;
+                //System.out.println(time);
+//             Thread one = new Thread(){
+//                 public void run(){
+//                     try {
+//                         //model2.addRow(rowData);
+//                         Thread.sleep(time * 1000);
+//                         model2.removeRow(0);
+//                         if(core1.getRowCount()==0){
+//                         this.interrupt();
+//                         }
+//                     } catch (InterruptedException ex) {
+//                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+//                     }
+//                 }
+//             };
+//             one.start();
+//JOptionPane.showMessageDialog(this, "Process Done!");
+            try {
+                while(queues.getRowCount() != 0){
+                final int time;    
             Object[] rowData = new Object[4];
-//            final int time;
+            
             
             f=getPop();
             rowData[0] = f.getProcessName();
@@ -41,41 +65,37 @@ public class MainUI extends javax.swing.JFrame {
             rowData[2] = f.getETA();
             rowData[3] = f.getType();
             model2.addRow(rowData);
-//            
-//            time=f.getETA();
-            //This is where threading for core 1;
+        
+            time=f.getETA() * 1000;
+                sleep(time);
+                model2.removeRow(0);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+             
             
-//            Thread one = new Thread(){
-//                public void run(){
-//                    try {
-//                        Thread.sleep(time * 1000);
-//                        this.interrupt();
-//                    } catch (InterruptedException ex) {
-//                        Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
-//                }
-//            };
-//            one.start();
-//            while(!Thread.interrupted()){}
+            //}
             //System.out
             
         }
+    
+    public void RR(){
+        model = (DefaultTableModel)queues.getModel();
+        
+        for(int row = 0; row < Processes.getRowCount(); row++){
+            Object[] rowData = new Object[4];
+            rowData[0] = Processes.getValueAt(row, 0);
+            rowData[1] = Processes.getValueAt(row, 1);
+            rowData[2] = Processes.getValueAt(row, 2);
+            rowData[3] = Processes.getValueAt(row, 3);
+            model.addRow(rowData);
+        }
+        
+        //CPU Process starts
+        
     }
-//    public void RR(){
-//        model = (DefaultTableModel)queues.getModel();
-//        
-//        for(int row = 0; row < Processes.getRowCount(); row++){
-//            Object[] rowData = new Object[4];
-//            rowData[0] = Processes.getValueAt(row, 0);
-//            rowData[1] = Processes.getValueAt(row, 1);
-//            rowData[2] = Processes.getValueAt(row, 2);
-//            rowData[3] = Processes.getValueAt(row, 3);
-//            model.addRow(rowData);
-//        }
-//        
-//        //CPU Process starts
-//        
-//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -640,7 +660,6 @@ public class MainUI extends javax.swing.JFrame {
         }
         
         FIFO();
-        //public void start();
         
     }//GEN-LAST:event_startActionPerformed
 
@@ -769,20 +788,12 @@ public class MainUI extends javax.swing.JFrame {
     public Functions getPop (){
         model = (DefaultTableModel)queues.getModel();
         Functions ret = new Functions();
-        ret.setProcessName(queues.getValueAt(0, 0).toString());
-        ret.setPriority(Integer.parseInt(queues.getValueAt(0, 1).toString()));
-        ret.setETA(Integer.parseInt(queues.getValueAt(0, 2).toString()));
-        ret.setType(queues.getValueAt(0, 3).toString());
+        ret.setProcessName(model.getValueAt(0, 0).toString());
+        ret.setPriority(Integer.parseInt(model.getValueAt(0, 1).toString()));
+        ret.setETA(Integer.parseInt(model.getValueAt(0, 2).toString()));
+        ret.setType(model.getValueAt(0, 3).toString());
         model.removeRow(0);
-        JOptionPane.showMessageDialog(this, "Kleptomantis!");
         return ret;
-    }
-  
-    public MainUI(Object[] obj){
-        initComponents();
-        
-        DefaultTableModel toProcess = (DefaultTableModel)Processes.getModel();
-        toProcess.addRow(obj);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
