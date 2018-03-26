@@ -22,6 +22,58 @@ public class MainUI extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void FIFO(){
+        DefaultTableModel toQueues = (DefaultTableModel)queues.getModel();
+        
+        for(int row = 0; row < Processes.getRowCount(); row++){
+            Object[] rowData = new Object[4];
+            rowData[0] = Processes.getValueAt(row, 0);
+            rowData[1] = Processes.getValueAt(row, 1);
+            rowData[2] = Processes.getValueAt(row, 2);
+            rowData[3] = Processes.getValueAt(row, 3);
+            toQueues.addRow(rowData);
+        }
+        
+        //CPU Process starts
+        for(int row = 0; row < queues.getRowCount(); row++){
+            Functions f = new Functions();
+            Object[] rowData = new Object[4];
+            DefaultTableModel toCore1 = (DefaultTableModel)core1.getModel();
+            DefaultTableModel toCore2 = (DefaultTableModel)core2.getModel();
+            
+            f=getPop();
+            rowData[0] = f.getProcessName();
+            rowData[1] = f.getPriority();
+            rowData[2] = f.getETA();
+            rowData[3] = f.getType();
+            toCore1.addRow(rowData);
+            This is where threading for core 1;
+            
+            f=getPop();
+            rowData[0] = f.getProcessName();
+            rowData[1] = f.getPriority();
+            rowData[2] = f.getETA();
+            rowData[3] = f.getType();
+            toCore2.addRow(rowData);
+            This is where threading for core 2;
+        }
+    }
+    public void RR(){
+        DefaultTableModel toQueues = (DefaultTableModel)queues.getModel();
+        
+        for(int row = 0; row < Processes.getRowCount(); row++){
+            Object[] rowData = new Object[4];
+            rowData[0] = Processes.getValueAt(row, 0);
+            rowData[1] = Processes.getValueAt(row, 1);
+            rowData[2] = Processes.getValueAt(row, 2);
+            rowData[3] = Processes.getValueAt(row, 3);
+            toQueues.addRow(rowData);
+        }
+        
+        //CPU Process starts
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

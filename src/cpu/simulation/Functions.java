@@ -16,7 +16,7 @@ public class Functions {
     private int Priority;
     private int ETA;
     private String type;
-
+    
     /**
      * @return the processName
      */
