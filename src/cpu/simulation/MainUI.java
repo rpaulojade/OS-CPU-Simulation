@@ -5,7 +5,6 @@
  */
 package cpu.simulation;
 
-import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -28,36 +27,14 @@ public class MainUI extends javax.swing.JFrame {
         jPanel2.setVisible(false);
     }
 
-    public void FIFO() {
+    public void FIFO(){
         DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
         //CPU Process starts
         
-        Functions f = new Functions();
-        
-            
-                //This is where threading for core 1;
-                //System.out.println(time);
-//             Thread one = new Thread(){
-//                 public void run(){
-//                     try {
-//                         //model2.addRow(rowData);
-//                         Thread.sleep(time * 1000);
-//                         model2.removeRow(0);
-//                         if(core1.getRowCount()==0){
-//                         this.interrupt();
-//                         }
-//                     } catch (InterruptedException ex) {
-//                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-//                     }
-//                 }
-//             };
-//             one.start();
-//JOptionPane.showMessageDialog(this, "Process Done!");
-            try {
-                while(queues.getRowCount() != 0){
-                final int time;    
+        while(queues.getRowCount() != 0){
+            Functions f = new Functions();
             Object[] rowData = new Object[4];
-            
+            final int time;
             
             f=getPop();
             rowData[0] = f.getProcessName();
@@ -65,18 +42,27 @@ public class MainUI extends javax.swing.JFrame {
             rowData[2] = f.getETA();
             rowData[3] = f.getType();
             model2.addRow(rowData);
-        
-            time=f.getETA() * 1000;
-                sleep(time);
-                model2.removeRow(0);
-                }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-             
+            
+            time=f.getETA();
+            //This is where threading for core 1;
+            //System.out.println(time);
+             Thread one = new Thread(){
+                 public void run(){
+                     try {
+                         //model2.addRow(rowData);
+                         Thread.sleep(time * 1000);
+                         model2.removeRow(0);
+                         this.interrupt();
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+             };
+             one.start();
+             //JOptionPane.showMessageDialog(this, "Process Done!");
              
             
-            //}
+            }
             //System.out
             
         }
@@ -660,6 +646,7 @@ public class MainUI extends javax.swing.JFrame {
         }
         
         FIFO();
+        //public void start();
         
     }//GEN-LAST:event_startActionPerformed
 
@@ -794,6 +781,13 @@ public class MainUI extends javax.swing.JFrame {
         ret.setType(model.getValueAt(0, 3).toString());
         model.removeRow(0);
         return ret;
+    }
+  
+    public MainUI(Object[] obj){
+        initComponents();
+        
+        DefaultTableModel toProcess = (DefaultTableModel)Processes.getModel();
+        toProcess.addRow(obj);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
