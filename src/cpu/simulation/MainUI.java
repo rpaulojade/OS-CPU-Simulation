@@ -260,6 +260,63 @@ public class MainUI extends javax.swing.JFrame {
         }
     }
     
+    public void MLFQ(){
+        model2 = (DefaultTableModel)core1.getModel();
+        DefaultTableModel modelq = (DefaultTableModel)queues.getModel();
+        Functions f=new Functions();
+        int smaller=0;
+        int prio=0;
+        int count =0;
+        Object[] rowData = new Object[4];
+        
+        while(queues.getRowCount() != 0 && count < 1){
+            
+            for(int x=0;x<queues.getRowCount();x++){
+                if(Integer.parseInt(queues.getValueAt(x, 1).toString()) < Integer.parseInt(queues.getValueAt(smaller, 1).toString())){
+                    smaller=x;
+                }
+            }
+            prio=Integer.parseInt(queues.getValueAt(smaller, 1).toString());
+            System.out.println();
+            for(int x=0;x<queues.getRowCount();x++){
+                final int time;
+                if(Integer.parseInt(queues.getValueAt(x, 1).toString()) == prio){
+                    rowData[0] = queues.getValueAt(smaller, 0);
+                    rowData[1] = queues.getValueAt(smaller, 1);
+                    rowData[2] = queues.getValueAt(smaller, 2);
+                    rowData[3] = queues.getValueAt(smaller, 3);
+                    model2.addRow(rowData);
+                    modelq.removeRow(x);
+                    time=Integer.parseInt(rowData[2].toString());
+                    //This is where threading for core 1;
+                    //System.out.println(time);
+                    Thread one = new Thread(){
+                    public void run(){
+                        try {
+                         //model2.addRow(rowData);
+                         Thread.sleep(time * 1000);
+                         model2.removeRow(0);
+                         this.interrupt();
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                    }
+                    };
+                    
+                    one.start();
+                }
+            }
+            
+            
+            
+            smaller=0;
+            
+            
+             
+             count++;
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -817,6 +874,8 @@ public class MainUI extends javax.swing.JFrame {
             SJF();
         }else if(pLottery.isSelected()){
             lottery();
+        }else if(pMFQ.isSelected()){
+            MLFQ();
         }
     }//GEN-LAST:event_startActionPerformed
 
