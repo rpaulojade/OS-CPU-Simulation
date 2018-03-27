@@ -18,6 +18,7 @@ import javax.swing.table.TableModel;
  */
 public class MainUI extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
+    DefaultTableModel model2 = new DefaultTableModel();
     
     /**
      * Creates new form MainUI
@@ -28,10 +29,11 @@ public class MainUI extends javax.swing.JFrame {
     }
 
     public void FIFO(){
-        DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
+        model2 = (DefaultTableModel)core1.getModel();
         //CPU Process starts
+        int count=0;
         
-        while(queues.getRowCount() != 0){
+        while(queues.getRowCount() != 0 && count < 1){
             Functions f = new Functions();
             Object[] rowData = new Object[4];
             final int time;
@@ -60,7 +62,7 @@ public class MainUI extends javax.swing.JFrame {
              };
              one.start();
              //JOptionPane.showMessageDialog(this, "Process Done!");
-             
+             count++;             
             
             }
             //System.out
@@ -68,12 +70,13 @@ public class MainUI extends javax.swing.JFrame {
         }
     
     public void priority(){
-        DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
+        model2 = (DefaultTableModel)core1.getModel();
         DefaultTableModel modelq = (DefaultTableModel)queues.getModel();
         Functions f=new Functions();
         int smaller=0;
+        int count =0;
         
-        while(queues.getRowCount() != 0){
+        while(queues.getRowCount() != 0 && count < 1){
             final int time;
             for(int x=0;x<queues.getRowCount();x++){
                 if(Integer.parseInt(queues.getValueAt(x, 1).toString()) < Integer.parseInt(queues.getValueAt(smaller, 1).toString())){
@@ -113,23 +116,47 @@ public class MainUI extends javax.swing.JFrame {
                  }
              };
              one.start();
+             count++;
         }
     }
     
     public void RR(){
-        model = (DefaultTableModel)queues.getModel();
-        
-        for(int row = 0; row < Processes.getRowCount(); row++){
-            Object[] rowData = new Object[4];
-            rowData[0] = Processes.getValueAt(row, 0);
-            rowData[1] = Processes.getValueAt(row, 1);
-            rowData[2] = Processes.getValueAt(row, 2);
-            rowData[3] = Processes.getValueAt(row, 3);
-            model.addRow(rowData);
-        }
-        
+        model2 = (DefaultTableModel)core1.getModel();
+        int count =0;
         //CPU Process starts
         
+        while(queues.getRowCount() != 0 && count <=2){
+            Functions f = new Functions();
+            Object[] rowData = new Object[4];
+            final int time;
+            
+            f=getPop();
+            rowData[0] = f.getProcessName();
+            rowData[1] = f.getPriority();
+            rowData[2] = f.getETA();
+            rowData[3] = f.getType();
+            model2.addRow(rowData);
+            
+            time=f.getETA();
+            //This is where threading for core 1;
+            //System.out.println(time);
+             Thread one = new Thread(){
+                 public void run(){
+                     try {
+                         //model2.addRow(rowData);
+                         Thread.sleep(time * 1000);
+                         model2.removeRow(0);
+                         this.interrupt();
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+             };
+             one.start();
+             //JOptionPane.showMessageDialog(this, "Process Done!");
+             
+            count++;
+        }
     }
     
     /**
@@ -168,8 +195,8 @@ public class MainUI extends javax.swing.JFrame {
         core1 = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         queues = new javax.swing.JTable();
+        queueAll = new javax.swing.JButton();
         start = new javax.swing.JButton();
-        stop = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -235,6 +262,7 @@ public class MainUI extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Policies");
 
+        pFIFO.setSelected(true);
         pFIFO.setText("FIFO");
         pFIFO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -353,17 +381,17 @@ public class MainUI extends javax.swing.JFrame {
             queues.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        queueAll.setText("Queue All Process");
+        queueAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                queueAllActionPerformed(evt);
+            }
+        });
+
         start.setText("Start Simulate");
         start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 startActionPerformed(evt);
-            }
-        });
-
-        stop.setText("Stop Simulate");
-        stop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stopActionPerformed(evt);
             }
         });
 
@@ -461,9 +489,9 @@ public class MainUI extends javax.swing.JFrame {
                         .addComponent(jLabel9))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(start)
+                        .addComponent(queueAll)
                         .addGap(33, 33, 33)
-                        .addComponent(stop)))
+                        .addComponent(start)))
                 .addGap(37, 37, 37))
         );
         jPanel1Layout.setVerticalGroup(
@@ -513,8 +541,8 @@ public class MainUI extends javax.swing.JFrame {
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(start)
-                            .addComponent(stop))
+                            .addComponent(queueAll)
+                            .addComponent(start))
                         .addGap(27, 27, 27))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel9)
@@ -580,11 +608,6 @@ public class MainUI extends javax.swing.JFrame {
 
         typeText.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pre-emptive", "Non-Preemptive" }));
         typeText.setSelectedIndex(-1);
-        typeText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                typeTextActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -681,11 +704,18 @@ public class MainUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_stopActionPerformed
-
     private void startActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startActionPerformed
+        // TODO add your handling code here:
+        if(pFIFO.isSelected()){
+            FIFO();
+        }else if(pPriority.isSelected()){
+            priority();
+        }else if(pRoundRobin.isSelected()){
+            RR();
+        }
+    }//GEN-LAST:event_startActionPerformed
+
+    private void queueAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_queueAllActionPerformed
         // TODO add your handling code here:
         model = (DefaultTableModel)queues.getModel();
         
@@ -697,15 +727,9 @@ public class MainUI extends javax.swing.JFrame {
             rowData[3] = Processes.getValueAt(row, 3);
             model.addRow(rowData);
         }
-        
-        if(pFIFO.isSelected()){
-            FIFO();
-        }else if(pPriority.isSelected()){
-            priority();
-        }
         //public void start();
         
-    }//GEN-LAST:event_startActionPerformed
+    }//GEN-LAST:event_queueAllActionPerformed
 
     private void addProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProcessActionPerformed
         // TODO add your handling code here:
@@ -759,11 +783,11 @@ public class MainUI extends javax.swing.JFrame {
 
     private void pRoundRobinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pRoundRobinActionPerformed
         // TODO add your handling code here:
-        if(pFIFO.isSelected()){
+        if(pRoundRobin.isSelected()){
             pLottery.setSelected(false);
             pMFQ.setSelected(false);
             pPriority.setSelected(false);
-            pRoundRobin.setSelected(false);
+            pFIFO.setSelected(false);
             pSJF.setSelected(false);
         }
     }//GEN-LAST:event_pRoundRobinActionPerformed
@@ -934,9 +958,9 @@ public class MainUI extends javax.swing.JFrame {
     private javax.swing.JRadioButton pSJF;
     private javax.swing.JTextField priorityText;
     private javax.swing.JTextField processText;
+    private javax.swing.JButton queueAll;
     private javax.swing.JTable queues;
     private javax.swing.JButton start;
-    private javax.swing.JButton stop;
     private javax.swing.JComboBox<String> typeText;
     // End of variables declaration//GEN-END:variables
 }
