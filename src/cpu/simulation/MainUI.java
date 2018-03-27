@@ -5,6 +5,7 @@
  */
 package cpu.simulation;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -79,7 +80,7 @@ public class MainUI extends javax.swing.JFrame {
         while(queues.getRowCount() != 0 && count < 1){
             final int time;
             for(int x=0;x<queues.getRowCount();x++){
-                if(Integer.parseInt(queues.getValueAt(x, 1).toString()) < Integer.parseInt(queues.getValueAt(smaller, 1).toString())){
+                if(Integer.parseInt(queues.getValueAt(x, 2).toString()) < Integer.parseInt(queues.getValueAt(smaller, 2).toString())){
                     smaller=x;
                 }
             }
@@ -156,6 +157,106 @@ public class MainUI extends javax.swing.JFrame {
              //JOptionPane.showMessageDialog(this, "Process Done!");
              
             count++;
+        }
+    }
+    
+    public void SJF(){
+        model2 = (DefaultTableModel)core1.getModel();
+        DefaultTableModel modelq = (DefaultTableModel)queues.getModel();
+        Functions f=new Functions();
+        int smaller=0;
+        int count =0;
+        
+        while(queues.getRowCount() != 0 && count < 1){
+            final int time;
+            for(int x=0;x<queues.getRowCount();x++){
+                if(Integer.parseInt(queues.getValueAt(x, 2).toString()) < Integer.parseInt(queues.getValueAt(smaller, 2).toString())){
+                    smaller=x;
+                }
+            }
+            Object[] rowData = new Object[4];
+            
+//            f=getPop();
+//            rowData[0] = f.getProcessName();
+//            rowData[1] = f.getPriority();
+//            rowData[2] = f.getETA();
+//            rowData[3] = f.getType();
+//            model2.addRow(rowData);
+//            
+            rowData[0] = queues.getValueAt(smaller, 0);
+            rowData[1] = queues.getValueAt(smaller, 1);
+            rowData[2] = queues.getValueAt(smaller, 2);
+            rowData[3] = queues.getValueAt(smaller, 3);
+            model2.addRow(rowData);
+            modelq.removeRow(smaller);
+            smaller=0;
+            
+            time=Integer.parseInt(rowData[2].toString());
+            //This is where threading for core 1;
+            //System.out.println(time);
+             Thread one = new Thread(){
+                 public void run(){
+                     try {
+                         //model2.addRow(rowData);
+                         Thread.sleep(time * 1000);
+                         model2.removeRow(0);
+                         this.interrupt();
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+             };
+             one.start();
+             count++;
+        }
+    }
+    
+    public void lottery(){
+        model2 = (DefaultTableModel)core1.getModel();
+        DefaultTableModel modelq = (DefaultTableModel)queues.getModel();
+        Functions f=new Functions();
+        Random rand = new Random();
+        int max = queues.getRowCount();
+        int selected;
+        int count =0;
+        
+        while(queues.getRowCount() != 0 && count < 1){
+            final int time;
+            selected = (int) rand.nextInt(max);
+            Object[] rowData = new Object[4];
+            
+//            f=getPop();
+//            rowData[0] = f.getProcessName();
+//            rowData[1] = f.getPriority();
+//            rowData[2] = f.getETA();
+//            rowData[3] = f.getType();
+//            model2.addRow(rowData);
+//            
+            rowData[0] = queues.getValueAt(selected, 0);
+            rowData[1] = queues.getValueAt(selected, 1);
+            rowData[2] = queues.getValueAt(selected, 2);
+            rowData[3] = queues.getValueAt(selected, 3);
+            model2.addRow(rowData);
+            modelq.removeRow(selected);
+            selected=0;
+            
+            time=Integer.parseInt(rowData[2].toString());
+            //This is where threading for core 1;
+            //System.out.println(time);
+             Thread one = new Thread(){
+                 public void run(){
+                     try {
+                         //model2.addRow(rowData);
+                         Thread.sleep(time * 1000);
+                         model2.removeRow(0);
+                         this.interrupt();
+                     } catch (InterruptedException ex) {
+                         Logger.getLogger(MainUI.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                 }
+             };
+             one.start();
+             count++;
         }
     }
     
@@ -712,6 +813,10 @@ public class MainUI extends javax.swing.JFrame {
             priority();
         }else if(pRoundRobin.isSelected()){
             RR();
+        }else if(pSJF.isSelected()){
+            SJF();
+        }else if(pLottery.isSelected()){
+            lottery();
         }
     }//GEN-LAST:event_startActionPerformed
 
