@@ -759,11 +759,11 @@ public class MainUI extends javax.swing.JFrame {
 
     private void pRoundRobinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pRoundRobinActionPerformed
         // TODO add your handling code here:
-        if(pFIFO.isSelected()){
+        if(pRoundRobin.isSelected()){
             pLottery.setSelected(false);
             pMFQ.setSelected(false);
             pPriority.setSelected(false);
-            pRoundRobin.setSelected(false);
+            pFIFO.setSelected(false);
             pSJF.setSelected(false);
         }
     }//GEN-LAST:event_pRoundRobinActionPerformed
