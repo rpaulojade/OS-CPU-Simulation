@@ -18,7 +18,7 @@ import javax.swing.table.TableModel;
  */
 public class MainUI extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
-
+    
     /**
      * Creates new form MainUI
      */
@@ -70,6 +70,7 @@ public class MainUI extends javax.swing.JFrame {
     public void priority(){
         DefaultTableModel model2 = (DefaultTableModel)core1.getModel();
         DefaultTableModel modelq = (DefaultTableModel)queues.getModel();
+        Functions f=new Functions();
         int smaller=0;
         
         while(queues.getRowCount() != 0){
@@ -80,6 +81,14 @@ public class MainUI extends javax.swing.JFrame {
                 }
             }
             Object[] rowData = new Object[4];
+            
+//            f=getPop();
+//            rowData[0] = f.getProcessName();
+//            rowData[1] = f.getPriority();
+//            rowData[2] = f.getETA();
+//            rowData[3] = f.getType();
+//            model2.addRow(rowData);
+//            
             rowData[0] = queues.getValueAt(smaller, 0);
             rowData[1] = queues.getValueAt(smaller, 1);
             rowData[2] = queues.getValueAt(smaller, 2);
@@ -226,7 +235,6 @@ public class MainUI extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel7.setText("Policies");
 
-        pFIFO.setSelected(true);
         pFIFO.setText("FIFO");
         pFIFO.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -572,6 +580,11 @@ public class MainUI extends javax.swing.JFrame {
 
         typeText.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pre-emptive", "Non-Preemptive" }));
         typeText.setSelectedIndex(-1);
+        typeText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                typeTextActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -685,7 +698,11 @@ public class MainUI extends javax.swing.JFrame {
             model.addRow(rowData);
         }
         
-        priority();
+        if(pFIFO.isSelected()){
+            FIFO();
+        }else if(pPriority.isSelected()){
+            priority();
+        }
         //public void start();
         
     }//GEN-LAST:event_startActionPerformed
@@ -698,26 +715,68 @@ public class MainUI extends javax.swing.JFrame {
 
     private void pLotteryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pLotteryActionPerformed
         // TODO add your handling code here:
+        if(pLottery.isSelected()){
+            pFIFO.setSelected(false);
+            pMFQ.setSelected(false);
+            pPriority.setSelected(false);
+            pRoundRobin.setSelected(false);
+            pSJF.setSelected(false);
+        }
     }//GEN-LAST:event_pLotteryActionPerformed
 
     private void pMFQActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pMFQActionPerformed
         // TODO add your handling code here:
+        if(pMFQ.isSelected()){
+            pLottery.setSelected(false);
+            pFIFO.setSelected(false);
+            pPriority.setSelected(false);
+            pRoundRobin.setSelected(false);
+            pSJF.setSelected(false);
+        }
     }//GEN-LAST:event_pMFQActionPerformed
 
     private void pPriorityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pPriorityActionPerformed
         // TODO add your handling code here:
+        if(pPriority.isSelected()){
+            pLottery.setSelected(false);
+            pMFQ.setSelected(false);
+            pFIFO.setSelected(false);
+            pRoundRobin.setSelected(false);
+            pSJF.setSelected(false);
+        }
     }//GEN-LAST:event_pPriorityActionPerformed
 
     private void pSJFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pSJFActionPerformed
         // TODO add your handling code here:
+        if(pSJF.isSelected()){
+            pLottery.setSelected(false);
+            pMFQ.setSelected(false);
+            pPriority.setSelected(false);
+            pRoundRobin.setSelected(false);
+            pFIFO.setSelected(false);
+        }
     }//GEN-LAST:event_pSJFActionPerformed
 
     private void pRoundRobinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pRoundRobinActionPerformed
         // TODO add your handling code here:
+        if(pFIFO.isSelected()){
+            pLottery.setSelected(false);
+            pMFQ.setSelected(false);
+            pPriority.setSelected(false);
+            pRoundRobin.setSelected(false);
+            pSJF.setSelected(false);
+        }
     }//GEN-LAST:event_pRoundRobinActionPerformed
 
     private void pFIFOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pFIFOActionPerformed
         // TODO add your handling code here:
+        if(pFIFO.isSelected()){
+            pLottery.setSelected(false);
+            pMFQ.setSelected(false);
+            pPriority.setSelected(false);
+            pRoundRobin.setSelected(false);
+            pSJF.setSelected(false);
+        }
     }//GEN-LAST:event_pFIFOActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
@@ -776,6 +835,10 @@ public class MainUI extends javax.swing.JFrame {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void typeTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_typeTextActionPerformed
 
     /**
      * @param args the command line arguments
